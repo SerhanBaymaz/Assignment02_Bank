@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /*
-            Missing implementations :
+            Missing implementations and questions :
               --
               --
               --
@@ -24,6 +25,9 @@ class Account {
     private double balance;
 
     //METHODS
+    public Account() {
+    }
+
     // i. Constructor that takes the account number as parameter
     //  and defaults the balance to 0.
     public Account(String accountNumber) {
@@ -79,10 +83,18 @@ class PersonalAccount extends Account {
     private String name;
     private String surname;
     private String PIN;
+    //private String accountNumber; from Account Class
+    //private double balance; from Account Class
 
     //METHODS
     //i. Constructor that takes the account number, name, and surname as parameters
     //and sets the PIN to four (4) random digits
+    public PersonalAccount(){}
+
+    public PersonalAccount(String accountNumber) {
+        super(accountNumber);
+    }
+
     public PersonalAccount(String accountNumber, String name, String surname) {
         super(accountNumber);
         this.name = name;
@@ -148,6 +160,8 @@ class BusinessAccount extends Account{
         set methodunda mı       if(interestRate>0){this.}    yapılacak?
          */
     private double interestRate;
+    //private String accountNumber; from Account Class
+    //private double balance; from Account Class
 
     //i. Constructor that takes the account number and rate as parameters
     public BusinessAccount(String accountNumber, double interestRate) {
@@ -180,10 +194,94 @@ class BusinessAccount extends Account{
 
 }//BusinessAccount class (1)
 
+class Customer {
+    /*
+1) id: int – must be positive
+2)personalAccounts arrayList'i public mi , private mi olacak?
+3)closeAccount ve getAccount'da exception yazılacak.
+     */
+        //ATTRIBUTES
+    private int id;
+    private String name;
+    private String surname;
+    ArrayList<PersonalAccount> personalAccounts = new ArrayList<PersonalAccount>();
+    private PersonalAccount personalAccountObject;
+
+        //Getter and Setters
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public PersonalAccount getPersonalAccountObject() {
+        return personalAccountObject;
+    }
+    public void setPersonalAccountObject(PersonalAccount personalAccountObject) {
+        this.personalAccountObject = personalAccountObject;
+    }
+
+        //METHODS
+    public void openAccount(String acctNum){
+        this.personalAccountObject = new PersonalAccount(acctNum);
+        personalAccounts.add(this.personalAccountObject);
+    }
+
+
+    //getAccount(accountNum: String): PersonalAccount with the passed number
+          //  1. raises AccountNotFoundException if Account is not found
+
+    /*
+    public PersonalAccount getAccount(String accountNum){
+            if (accountNum.equals(personalAccountObject.getAcctNum()))
+                return personalAccountObject;
+            //add exception !   “AccountNotFoundException
+    }
+    */
+
+
+
+    public void closeAccount(String accountNum){
+        if (accountNum.equals(personalAccountObject.getAcctNum()))
+            personalAccounts.remove(personalAccountObject);
+        //add exception !
+        //1. raises AccountNotFoundException if Account is not found
+        //2. raises BalanceRemainingException if balance greater than 0
+    }
+
+}//Customer class (3)
+
 public class Assignment02_20200808006 {
 
     public static void main(String[] args) {
 	// write your code here
+/*
+        Customer c1  =new Customer();
+        c1.openAccount("987");
+        c1.getAccount("987").setName("Serhan");
+        c1.getAccount("987").setSurname("Baymaz");
+        c1.getAccount("987").deposit(468);
+        String infos = c1.getAccount("987").toString();
+        System.out.println(infos+c1.personalAccounts);
+        c1.closeAccount("987");
+        System.out.println(infos+c1.personalAccounts);
+
+*/
 
     }
 }
