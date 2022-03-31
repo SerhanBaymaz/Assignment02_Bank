@@ -266,6 +266,75 @@ class Customer {
 
 }//Customer class (3)
 
+class Company{
+    /*
+    1) id: int – must be positive
+    2)BussinesAccount arrayList'i public mi , private mi olacak?
+    3)closeAccount ve getAccount'da exception yazılacak.
+     */
+
+
+    //ATTRIBUTES
+    private int id;
+    private String name;
+    ArrayList<BusinessAccount> businessAccounts = new ArrayList<BusinessAccount>();
+    private BusinessAccount businessAccountObject;
+
+    //Getter and Setters
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public BusinessAccount getBusinessAccountObject() {
+        return businessAccountObject;
+    }
+    public void setBusinessAccountObject(BusinessAccount businessAccountObject) {
+        this.businessAccountObject = businessAccountObject;
+    }
+
+    //Constructors
+    public Company(){}
+    public Company(String name) {
+        this.name = name;
+    }
+
+    //Methods
+    public void openAccount(String acctNum,double rate){
+        this.businessAccountObject=new BusinessAccount(acctNum,rate);
+        businessAccounts.add(businessAccountObject);
+    }
+/*
+getAccount(acctNum: String): BusinessAccount with num passed
+1. raises AccountNotFoundException if Account is not found
+ */
+    /*
+    public BusinessAccount getAccount(String acctNum){
+            if (acctNum.equals(businessAccountObject.getAcctNum()))
+                return businessAccountObject;
+            //add exception !   “AccountNotFoundException
+    }
+    */
+
+
+    /*
+    closeAccount(accountNum: String): None – removes account from the set
+1. raises AccountNotFoundException if Account is not found
+2. raises BalanceRemainingException if balance greater than 0
+     */
+    public void closeAccount(String accountNum){
+        if (accountNum.equals(businessAccountObject.getAcctNum()))
+            businessAccounts.remove(businessAccountObject);
+    }
+}//Company class (3 problem)
+
 public class Assignment02_20200808006 {
 
     public static void main(String[] args) {
