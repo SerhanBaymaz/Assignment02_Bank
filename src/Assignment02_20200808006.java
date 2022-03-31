@@ -3,11 +3,53 @@ import java.util.Random;
 
 /*
             Missing implementations and questions :
-              --
-              --
-              --
+              --customer ve company classlarının içinde obje oluşturmaya gerek var mı
+              --Bank içindeki getClass methodları yapılacak.
+              --Bank'ın kalan methodları bitirilecek.
+              --Exceptionlar doldurulacak.......
 
  */
+class Bank{
+    //Attributes
+    private String name;
+    private String address;
+    ArrayList<Customer> customers=new ArrayList<Customer>();
+    ArrayList<Company> companies=new ArrayList<Company>();
+    ArrayList<Account> accounts=new ArrayList<Account>();
+
+    //Getters and Setters
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    //Methods
+    public void addCustomer(int id,String name,String surname){
+        Customer customerX = new Customer(name,surname);
+        customerX.setId(id);
+        customers.add(customerX);
+    }
+
+    public void addCompany(int id,String name){
+        Company companyX = new Company(name);
+        companyX.setId(id);
+        companies.add(companyX);
+    }
+
+    public void addAccount(Account account){
+        accounts.add(account);
+    }
+
+
+}//Bank class
 
 class Account {
 /*
@@ -287,7 +329,6 @@ class Company{
     3)closeAccount ve getAccount'da exception yazılacak.
      */
 
-
     //ATTRIBUTES
     private int id;
     private String name;
@@ -347,7 +388,12 @@ getAccount(acctNum: String): BusinessAccount with num passed
         if (accountNum.equals(businessAccountObject.getAcctNum()))
             businessAccounts.remove(businessAccountObject);
     }
-}//Company class (3 problem)
+
+    // toString(): String – “{name}”
+    public String toString() {
+        return getName();
+    }
+}//Company class (3)
 
 public class Assignment02_20200808006 {
 
