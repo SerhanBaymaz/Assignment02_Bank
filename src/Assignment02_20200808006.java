@@ -236,6 +236,14 @@ class Customer {
         this.personalAccountObject = personalAccountObject;
     }
 
+
+        //Constructors
+    public Customer(){}
+    public Customer(String name, String surname) {
+            this.name = name;
+            this.surname = surname;
+        }
+
         //METHODS
     public void openAccount(String acctNum){
         this.personalAccountObject = new PersonalAccount(acctNum);
@@ -262,6 +270,12 @@ class Customer {
         //add exception !
         //1. raises AccountNotFoundException if Account is not found
         //2. raises BalanceRemainingException if balance greater than 0
+    }
+
+    // toString(): String – “{name} {surname all capital letters}”
+    public String toString(){
+        return getName()  + " "+ getSurname().toUpperCase();
+
     }
 
 }//Customer class (3)
@@ -349,7 +363,6 @@ public class Assignment02_20200808006 {
         System.out.println(infos+c1.personalAccounts);
         c1.closeAccount("987");
         System.out.println(infos+c1.personalAccounts);
-
 */
 
     }
