@@ -66,7 +66,6 @@ class Bank{
         }
 
     }
-
     public Customer getCustomer(String name, String surname) {
         boolean isFound = false;
         Customer c=new Customer();
@@ -84,11 +83,41 @@ class Bank{
         }
 
     }
-    /*
-    vi. getCustomer(name: String, surname: String): Customer with the passed name
-1. raises CustomerNotFoundException with name and surname parameters if Customer not found
-     */
 
+    public Company getCompany(int id){
+        boolean isFound = false;
+        Company c=new Company();
+        for (Company company1 : companies) {
+            if (company1.getId()==id) {
+                isFound=true;
+                c=company1;
+            }
+        }
+
+        if (isFound==true){
+            return c;
+        }else{
+            throw new CompanyNotFoundException(id);
+        }
+
+    }
+    public Company getCompany(String name){
+        boolean isFound = false;
+        Company c=new Company();
+        for (Company company1 : companies) {
+            if (company1.getName().equals(name)) {
+                isFound=true;
+                c=company1;
+            }
+        }
+
+        if (isFound==true){
+            return c;
+        }else{
+            throw new CompanyNotFoundException(name);
+        }
+
+    }
 
 }//Bank class
 
@@ -500,6 +529,29 @@ class CustomerNotFoundException extends RuntimeException{
     }
 }//CustomerNotFoundException class
 
+class CompanyNotFoundException extends RuntimeException{
+    int id;
+    String name;
+
+    public CompanyNotFoundException(int id) {
+        this.id = id;
+        this.name=null;
+    }
+    public CompanyNotFoundException(String name) {
+        this.name = name;
+        this.id=0000;
+    }
+
+    @Override
+    public String toString() {
+        if (name==null)
+            return "CompanyNotFoundException: id - " + id;
+        else
+            return "CompanyNotFoundException: name - " + name;
+    }
+
+}//CompanyNotFoundException
+
 public class Assignment02_20200808006 {
 
     public static void main(String[] args) throws Exception {
@@ -548,6 +600,19 @@ public class Assignment02_20200808006 {
             System.out.println("problem is :"+ex);
         }
 
+        bank1.addCompany(456,"Zeze yazılım");
+        try {
+            System.out.println(bank1.getCompany(4576));
+        }catch (CompanyNotFoundException ex){
+            System.out.println("problem : "+ex);
+        }
 
-    }
-}
+        try {
+            System.out.println(bank1.getCompany("abc şirketi"));
+        }catch (CompanyNotFoundException ex){
+            System.out.println("problem : "+ex);
+        }
+
+
+    }//main
+}//Assigment
