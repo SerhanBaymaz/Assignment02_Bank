@@ -149,6 +149,25 @@ class Bank{
         }
     }
 
+    /*
+    closeAccount(accountNum: String): None – removes account from the set
+1. raises AccountNotFoundException if Account is not found
+2. raises BalanceRemainingException if account has a balance greater than 0
+     */
+    public void closeAccount(String accountNum){
+        if (getAccount(accountNum).getBalance()==0){
+
+            try {
+                accounts.remove(getAccount(accountNum));
+            }catch (AccountNotFoundException acEx){
+                System.out.println(acEx);
+            }
+
+        }else{
+            throw new BalanceRemainingException(getAccount(accountNum).getBalance());
+        }
+    }
+
 }//Bank class
 
 class Account {
@@ -665,6 +684,12 @@ public class Assignment02_20200808006 {
 
         System.out.println("After transfer acc5 :"+bank1.getAccount("456").getBalance());
         System.out.println("After transfer acc6 :"+bank1.getAccount("963").getBalance());
+
+        try {
+            bank1.closeAccount("454356");
+        }catch (Exception e){
+            System.out.println(e);
+        }
 
 
 
