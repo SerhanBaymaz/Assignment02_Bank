@@ -17,6 +17,14 @@ class Bank{
     ArrayList<Company> companies=new ArrayList<Company>();
     ArrayList<Account> accounts=new ArrayList<Account>();
 
+    public Bank() {
+    }
+
+    public Bank(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
     //Getters and Setters
     public String getName() {
         return name;
@@ -149,11 +157,6 @@ class Bank{
         }
     }
 
-    /*
-    closeAccount(accountNum: String): None – removes account from the set
-1. raises AccountNotFoundException if Account is not found
-2. raises BalanceRemainingException if account has a balance greater than 0
-     */
     public void closeAccount(String accountNum){
         if (getAccount(accountNum).getBalance()==0){
 
@@ -168,6 +171,11 @@ class Bank{
         }
     }
 
+    @Override
+    public String toString() {
+        String s = getName()+"    "+getAddress()+"\n"+"    "+customers.toString();
+        return s;
+    }
 }//Bank class
 
 class Account {
@@ -325,6 +333,10 @@ class BusinessAccount extends Account{
     //private String accountNumber; from Account Class
     //private double balance; from Account Class
 
+
+    public BusinessAccount() {
+    }
+
     //i. Constructor that takes the account number and rate as parameters
     public BusinessAccount(String accountNumber, double interestRate) {
         super(accountNumber);
@@ -366,7 +378,6 @@ class Customer {
     private String name;
     private String surname;
     ArrayList<PersonalAccount> personalAccounts = new ArrayList<PersonalAccount>();
-    private PersonalAccount personalAccountObject;
 
         //Getter and Setters
     public int getId() {
@@ -390,12 +401,6 @@ class Customer {
         this.surname = surname;
     }
 
-    public PersonalAccount getPersonalAccountObject() {
-        return personalAccountObject;
-    }
-    public void setPersonalAccountObject(PersonalAccount personalAccountObject) {
-        this.personalAccountObject = personalAccountObject;
-    }
 
 
         //Constructors
@@ -407,29 +412,41 @@ class Customer {
 
         //METHODS
     public void openAccount(String acctNum){
-        this.personalAccountObject = new PersonalAccount(acctNum);
-        personalAccounts.add(this.personalAccountObject);
+        personalAccounts.add( new PersonalAccount(acctNum));
     }
 
-    public PersonalAccount getAccount(String accountNum) throws RuntimeException{
-        if (accountNum.equals(personalAccountObject.getAcctNum()))
-            return personalAccountObject;
-        else{
+    public PersonalAccount getAccount(String accountNum) {
+        boolean isFound = false;
+        PersonalAccount pa=new PersonalAccount();
+        for (PersonalAccount perAcc1 : personalAccounts) {
+            if (perAcc1.getAcctNum().equals(accountNum)) {
+                isFound=true;
+                pa=perAcc1;
+            }
+        }
+
+        if (isFound==true){
+            return pa;
+        }else{
             throw new AccountNotFoundException(accountNum);
         }
+
     }
 
-    public void closeAccount(String accountNum) throws RuntimeException{
-        if (accountNum.equals(personalAccountObject.getAcctNum()))
-            personalAccounts.remove(personalAccountObject);
-        else{
-            throw new AccountNotFoundException(accountNum);
-        }
+    public void closeAccount(String accountNum){
+        if (getAccount(accountNum).getBalance()==0){
 
-        if (personalAccountObject.getBalance()>0){
-            throw new BalanceRemainingException(personalAccountObject.getBalance());
+            try {
+                personalAccounts.remove(getAccount(accountNum));
+            }catch (AccountNotFoundException acEx){
+                System.out.println(acEx);
+            }
+
+        }else{
+            throw new BalanceRemainingException(getAccount(accountNum).getBalance());
         }
     }
+
 
     // toString(): String – “{name} {surname all capital letters}”
     public String toString(){
@@ -449,7 +466,7 @@ class Company{
     private int id;
     private String name;
     ArrayList<BusinessAccount> businessAccounts = new ArrayList<BusinessAccount>();
-    private BusinessAccount businessAccountObject;
+
 
     //Getter and Setters
     public int getId() {
@@ -464,12 +481,7 @@ class Company{
     public void setName(String name) {
         this.name = name;
     }
-    public BusinessAccount getBusinessAccountObject() {
-        return businessAccountObject;
-    }
-    public void setBusinessAccountObject(BusinessAccount businessAccountObject) {
-        this.businessAccountObject = businessAccountObject;
-    }
+
 
     //Constructors
     public Company(){}
@@ -479,27 +491,40 @@ class Company{
 
     //Methods
     public void openAccount(String acctNum,double rate){
-        this.businessAccountObject=new BusinessAccount(acctNum,rate);
-        businessAccounts.add(businessAccountObject);
+        businessAccounts.add(new BusinessAccount(acctNum,rate));
     }
 
-    public BusinessAccount getAccount(String acctNum) throws RuntimeException{
-        if (acctNum.equals(businessAccountObject.getAcctNum()))
-            return businessAccountObject;
-        else{
+
+
+    public BusinessAccount getAccount(String acctNum) {
+        boolean isFound = false;
+        BusinessAccount ba=new BusinessAccount();
+        for (BusinessAccount bussAcc1 : businessAccounts) {
+            if (bussAcc1.getAcctNum().equals(acctNum)) {
+                isFound=true;
+                ba=bussAcc1;
+            }
+        }
+
+        if (isFound==true){
+            return ba;
+        }else{
             throw new AccountNotFoundException(acctNum);
         }
+
     }
 
-    public void closeAccount(String accountNum) throws RuntimeException{
-        if (accountNum.equals(businessAccountObject.getAcctNum()))
-            businessAccounts.remove(businessAccountObject);
-        else{
-            throw new AccountNotFoundException(accountNum);
-        }
+    public void closeAccount(String accountNum){
+        if (getAccount(accountNum).getBalance()==0){
 
-        if (businessAccountObject.getBalance()>0){
-            throw new BalanceRemainingException(businessAccountObject.getBalance());
+            try {
+                businessAccounts.remove(getAccount(accountNum));
+            }catch (AccountNotFoundException acEx){
+                System.out.println(acEx);
+            }
+
+        }else{
+            throw new BalanceRemainingException(getAccount(accountNum).getBalance());
         }
     }
 
@@ -605,7 +630,7 @@ public class Assignment02_20200808006 {
 
     public static void main(String[] args) throws Exception {
         // write your code here
-
+/*
         Customer c1  =new Customer();
         c1.openAccount("987");
         c1.getAccount("987").setName("Serhan");
@@ -691,7 +716,36 @@ public class Assignment02_20200808006 {
             System.out.println(e);
         }
 
-
+        System.out.println(bank1.toString());
+*/
+        Bank b = new Bank("My Bank", "My Bank's Address");
+        b.addCompany(1, "Company 1");
+        b.getCompany(1).openAccount("1234", 0.05);
+        b.addAccount(b.getCompany(1).getAccount("1234"));
+        b.getAccount("1234").deposit(500000);
+        b.getCompany(1).getAccount("1234").deposit(500000);
+        b.getCompany(1).openAccount("1235", 0.03);
+        b.addAccount(b.getCompany(1).getAccount("1235"));
+        b.getCompany(1).getAccount("1235").deposit(25000);
+        b.addCompany(2, "Company 2");
+        b.getCompany(2).openAccount("2345", 0.03);
+        b.addAccount(b.getCompany(2).getAccount("2345"));
+        b.getCompany(2).getAccount("2345").deposit(350);
+        b.addCustomer(1, "Customer", "1");
+        b.addCustomer(2, "Customer", "2");
+        Customer c = b.getCustomer(1);
+        c.openAccount("3456");
+        c.openAccount("3457");
+        c.getAccount("3456").deposit(150);
+        c.getAccount("3457").deposit(250);
+        c = b.getCustomer(2);
+        c.openAccount("4567");
+        c.getAccount("4567").deposit(1000);
+        b.addAccount(c.getAccount("4567"));
+        c = b.getCustomer(1);
+        b.addAccount(c.getAccount("3456"));
+        b.addAccount(c.getAccount("3457"));
+        //System.out.println(b.toString());
 
     }//main
 }//Assigment
