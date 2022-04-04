@@ -292,23 +292,22 @@ class Customer {
         personalAccounts.add(this.personalAccountObject);
     }
 
-
-    //getAccount(accountNum: String): PersonalAccount with the passed number
-          //  1. raises AccountNotFoundException if Account is not found
-
-    /*
-    public PersonalAccount getAccount(String accountNum){
-            if (accountNum.equals(personalAccountObject.getAcctNum()))
-                return personalAccountObject;
-            //add exception !   “AccountNotFoundException
+    public PersonalAccount getAccount(String accountNum) throws RuntimeException{
+        if (accountNum.equals(personalAccountObject.getAcctNum()))
+            return personalAccountObject;
+        else{
+            throw new AccountNotFoundException(accountNum);
+        }
     }
-    */
 
 
 
-    public void closeAccount(String accountNum){
+    public void closeAccount(String accountNum) throws RuntimeException{
         if (accountNum.equals(personalAccountObject.getAcctNum()))
             personalAccounts.remove(personalAccountObject);
+        else{
+            throw new AccountNotFoundException(accountNum);
+        }
         //add exception !
         //1. raises AccountNotFoundException if Account is not found
         //2. raises BalanceRemainingException if balance greater than 0
@@ -366,17 +365,14 @@ class Company{
         this.businessAccountObject=new BusinessAccount(acctNum,rate);
         businessAccounts.add(businessAccountObject);
     }
-/*
-getAccount(acctNum: String): BusinessAccount with num passed
-1. raises AccountNotFoundException if Account is not found
- */
-    /*
-    public BusinessAccount getAccount(String acctNum){
-            if (acctNum.equals(businessAccountObject.getAcctNum()))
-                return businessAccountObject;
-            //add exception !   “AccountNotFoundException
+
+    public BusinessAccount getAccount(String acctNum) throws RuntimeException{
+        if (acctNum.equals(businessAccountObject.getAcctNum()))
+            return businessAccountObject;
+        else{
+            throw new AccountNotFoundException(acctNum);
+        }
     }
-    */
 
 
     /*
@@ -384,9 +380,12 @@ getAccount(acctNum: String): BusinessAccount with num passed
 1. raises AccountNotFoundException if Account is not found
 2. raises BalanceRemainingException if balance greater than 0
      */
-    public void closeAccount(String accountNum){
+    public void closeAccount(String accountNum) throws RuntimeException{
         if (accountNum.equals(businessAccountObject.getAcctNum()))
             businessAccounts.remove(businessAccountObject);
+        else{
+            throw new AccountNotFoundException(accountNum);
+        }
     }
 
     // toString(): String – “{name}”
@@ -394,6 +393,20 @@ getAccount(acctNum: String): BusinessAccount with num passed
         return getName();
     }
 }//Company class (3)
+
+
+class AccountNotFoundException extends RuntimeException{
+    String acctNum;
+    public AccountNotFoundException(String acctNum){
+        this.acctNum=acctNum;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountNotFoundException: " + acctNum;
+    }
+}
+
 
 public class Assignment02_20200808006 {
 
