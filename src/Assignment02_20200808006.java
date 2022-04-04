@@ -240,7 +240,6 @@ class Customer {
     /*
 1) id: int – must be positive
 2)personalAccounts arrayList'i public mi , private mi olacak?
-3)closeAccount ve getAccount'da exception yazılacak.
      */
         //ATTRIBUTES
     private int id;
@@ -300,17 +299,16 @@ class Customer {
         }
     }
 
-
-
     public void closeAccount(String accountNum) throws RuntimeException{
         if (accountNum.equals(personalAccountObject.getAcctNum()))
             personalAccounts.remove(personalAccountObject);
         else{
             throw new AccountNotFoundException(accountNum);
         }
-        //add exception !
-        //1. raises AccountNotFoundException if Account is not found
-        //2. raises BalanceRemainingException if balance greater than 0
+
+        if (personalAccountObject.getBalance()>0){
+            throw new BalanceRemainingException(personalAccountObject.getBalance());
+        }
     }
 
     // toString(): String – “{name} {surname all capital letters}”
@@ -319,13 +317,12 @@ class Customer {
 
     }
 
-}//Customer class (3)
+}//Customer class (2)
 
 class Company{
     /*
     1) id: int – must be positive
     2)BussinesAccount arrayList'i public mi , private mi olacak?
-    3)closeAccount ve getAccount'da exception yazılacak.
      */
 
     //ATTRIBUTES
@@ -374,17 +371,15 @@ class Company{
         }
     }
 
-
-    /*
-    closeAccount(accountNum: String): None – removes account from the set
-1. raises AccountNotFoundException if Account is not found
-2. raises BalanceRemainingException if balance greater than 0
-     */
     public void closeAccount(String accountNum) throws RuntimeException{
         if (accountNum.equals(businessAccountObject.getAcctNum()))
             businessAccounts.remove(businessAccountObject);
         else{
             throw new AccountNotFoundException(accountNum);
+        }
+
+        if (businessAccountObject.getBalance()>0){
+            throw new BalanceRemainingException(businessAccountObject.getBalance());
         }
     }
 
@@ -392,7 +387,7 @@ class Company{
     public String toString() {
         return getName();
     }
-}//Company class (3)
+}//Company class (2)
 
 
 class AccountNotFoundException extends RuntimeException{
@@ -405,24 +400,51 @@ class AccountNotFoundException extends RuntimeException{
     public String toString() {
         return "AccountNotFoundException: " + acctNum;
     }
-}
+}//AccountNotFoundException class
 
+class BalanceRemainingException extends RuntimeException{
+    double balance;
+
+    public BalanceRemainingException(double balance){
+        this.balance=balance;
+    }
+
+    @Override
+    public String toString() {
+        return "BalanceRemainingException:"+balance;
+    }
+
+    public double getBalance(){
+        return balance;
+    }
+}//BalanceRemainingException
 
 public class Assignment02_20200808006 {
 
-    public static void main(String[] args) {
-	// write your code here
-/*
+    public static void main(String[] args) throws Exception {
+        // write your code here
+
         Customer c1  =new Customer();
         c1.openAccount("987");
         c1.getAccount("987").setName("Serhan");
         c1.getAccount("987").setSurname("Baymaz");
+        try {
+            c1.getAccount("84564");
+        } catch (AccountNotFoundException e) {
+            System.out.println("Sorun oluştu : "+e);
+        }
+
         c1.getAccount("987").deposit(468);
         String infos = c1.getAccount("987").toString();
         System.out.println(infos+c1.personalAccounts);
-        c1.closeAccount("987");
+        try {
+            c1.closeAccount("987");
+        }catch (BalanceRemainingException e){
+            System.out.println("sorun şu : "+e);
+        }
+
         System.out.println(infos+c1.personalAccounts);
-*/
+
 
     }
 }
