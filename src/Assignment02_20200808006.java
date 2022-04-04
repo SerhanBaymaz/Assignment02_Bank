@@ -3,7 +3,7 @@ import java.util.Random;
 
 /*
             Missing implementations and questions :
-              --customer ve company classlarının içinde obje oluşturmaya gerek var mı
+              --customer ve company classlarının içinde obje oluşturmaya gerek var mı yoksa arrayList içinden mi id'ye göre objeleri çağıracağız.
               --Bank içindeki getClass methodları yapılacak.
               --Bank'ın kalan methodları bitirilecek.
               --Exceptionlar doldurulacak.......
@@ -47,6 +47,47 @@ class Bank{
     public void addAccount(Account account){
         accounts.add(account);
     }
+
+
+    public Customer getCustomer(int id) {
+        boolean isFound = false;
+        Customer c=new Customer();
+        for (Customer customer1 : customers) {
+            if (customer1.getId()==id) {
+                isFound=true;
+                c=customer1;
+            }
+        }
+
+        if (isFound==true){
+            return c;
+        }else{
+            throw new CustomerNotFoundException(id);
+        }
+
+    }
+
+    public Customer getCustomer(String name, String surname) {
+        boolean isFound = false;
+        Customer c=new Customer();
+        for (Customer customer1 : customers) {
+            if (customer1.getName().equals(name) && customer1.getSurname().equals(surname)) {
+                isFound=true;
+                c=customer1;
+            }
+        }
+
+        if (isFound==true){
+            return c;
+        }else{
+            throw new CustomerNotFoundException(name,surname);
+        }
+
+    }
+    /*
+    vi. getCustomer(name: String, surname: String): Customer with the passed name
+1. raises CustomerNotFoundException with name and surname parameters if Customer not found
+     */
 
 
 }//Bank class
@@ -418,7 +459,7 @@ class BalanceRemainingException extends RuntimeException{
     public double getBalance(){
         return balance;
     }
-}//BalanceRemainingException
+}//BalanceRemainingException class
 
 class InvalidAmountException extends RuntimeException{
     double amount;
@@ -431,8 +472,33 @@ class InvalidAmountException extends RuntimeException{
     public String toString() {
         return "InvalidAmountException:"+amount;
     }
-}//InvalidAmountException
+}//InvalidAmountException class
 
+class CustomerNotFoundException extends RuntimeException{
+    int id;
+    String name;
+    String surname;
+
+    public CustomerNotFoundException(int id){
+        this.id=id;
+        this.name=null;
+        this.surname=null;
+    }
+
+    public CustomerNotFoundException(String name,String surname){
+        this.name=name;
+        this.surname=surname;
+        this.id=0000;
+    }
+
+    @Override
+    public String toString() {
+        if (name==null)
+            return "CustomerNotFoundException: id - "+id;
+        else
+            return "CustomerNotFoundException: name - " + name + " " + surname;
+    }
+}//CustomerNotFoundException class
 
 public class Assignment02_20200808006 {
 
@@ -459,6 +525,28 @@ public class Assignment02_20200808006 {
         }
 
         System.out.println(infos+c1.personalAccounts);
+
+
+        Bank bank1=new Bank();
+        bank1.setName("Ziraat Bankasi");
+        bank1.setAddress("Bingöl Dortyol");
+
+        bank1.addCustomer(147,"Memati","Baş");
+        System.out.println(bank1.getCustomer(147));
+
+        bank1.addCustomer(111,"Abdulhey","Çoban");
+        try {
+            System.out.println(bank1.getCustomer(191));
+        }catch (CustomerNotFoundException ex){
+            System.out.println("problem is : "+ex.toString());
+        }
+
+        bank1.addCustomer(159,"Erhan","Güllü");
+        try {
+            System.out.println(bank1.getCustomer("Ali","Güllü"));
+        }catch (CustomerNotFoundException ex){
+            System.out.println("problem is :"+ex);
+        }
 
 
     }
