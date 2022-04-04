@@ -119,6 +119,23 @@ class Bank{
 
     }
 
+    public Account getAccount(String accountNum){
+        boolean isFound = false;
+        Account a=new Account();
+        for (Account account1 : accounts) {
+            if (account1.getAcctNum().equals(accountNum)) {
+                isFound=true;
+                a=account1;
+            }
+        }
+
+        if (isFound==true){
+            return a;
+        }else{
+            throw new AccountNotFoundException(accountNum);
+        }
+    }
+
 }//Bank class
 
 class Account {
@@ -613,6 +630,12 @@ public class Assignment02_20200808006 {
             System.out.println("problem : "+ex);
         }
 
+        bank1.addAccount(c1.getAccount("987"));
+        try {
+            System.out.println(bank1.getAccount("98788"));
+        }catch (AccountNotFoundException ex){
+            System.out.println("sıkıntı : " +ex);
+        }
 
     }//main
 }//Assigment
