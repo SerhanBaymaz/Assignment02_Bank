@@ -3,7 +3,7 @@ import java.util.Random;
 
 /*
             Missing implementations and questions :
-              --customer ve company classlarının içinde obje oluşturmaya gerek var mı yoksa arrayList içinden mi id'ye göre objeleri çağıracağız.
+              !!--customer ve company classlarının içinde obje oluşturmaya gerek var mı yoksa arrayList içinden mi id'ye göre objeleri çağıracağız.
               --Bank içindeki getClass methodları yapılacak.
               --Bank'ın kalan methodları bitirilecek.
               --Exceptionlar doldurulacak.......
@@ -133,6 +133,19 @@ class Bank{
             return a;
         }else{
             throw new AccountNotFoundException(accountNum);
+        }
+    }
+
+    public void transferFunds(String accountFrom,String accountTo,double amount){
+        if (getAccount(accountFrom).getBalance()>=amount  && amount>=0){
+            try {
+                getAccount(accountFrom).withdrawal(amount);
+                getAccount(accountTo).deposit(amount);
+            }catch (AccountNotFoundException accEx){
+                System.out.println(accEx);
+            }
+        }else{
+            throw new InvalidAmountException(amount);
         }
     }
 
@@ -636,6 +649,24 @@ public class Assignment02_20200808006 {
         }catch (AccountNotFoundException ex){
             System.out.println("sıkıntı : " +ex);
         }
+
+        Account acc5=new Account("456",800);
+        Account acc6 = new Account("963",500);
+        bank1.addAccount(acc5);
+        bank1.addAccount(acc6);
+        System.out.println("before transfer acc5 : "+bank1.getAccount("456").getBalance());
+        System.out.println("before transfer acc6 : "+bank1.getAccount("963").getBalance());
+        System.out.println();
+        try {
+            bank1.transferFunds("456","963",-5005);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        System.out.println("After transfer acc5 :"+bank1.getAccount("456").getBalance());
+        System.out.println("After transfer acc6 :"+bank1.getAccount("963").getBalance());
+
+
 
     }//main
 }//Assigment
