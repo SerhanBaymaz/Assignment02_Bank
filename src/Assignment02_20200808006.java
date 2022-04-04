@@ -54,12 +54,6 @@ class Bank{
 class Account {
 /*
     --balance must be non-negative
-    --following modifications should be done.
-        i. deposit(amount: double): None
-             1. raises InvalidAmountException if amount is negative
-        ii. withdrawal(amount: double): None – decrease balance by amount
-                1. raises InvalidAmountException if amount is
-                negative or remaining balance is not enough
  */
 
     // ATTRIBUTES
@@ -99,16 +93,23 @@ class Account {
 
     //v. deposit(amount: double): None – increase balance by amount,
     // if amount is negative, do not change the balance.
+   //1. raises InvalidAmountException if amount is negative
     void deposit(double amount){
         if(amount>=0){
             this.balance+=amount;
+        }else{
+            throw new InvalidAmountException(amount);
         }
     }
 
     //vi. withdrawal(amount: double): None – decrease balance by amount,
     // if amount is negative, do not change the balance.
+    //     1. raises InvalidAmountException if amount is
+    // negative or remaining balance is not enough
     void withdrawal(double amount){
-        if (amount>=0){
+        if (amount<0 && amount>balance){
+            throw new InvalidAmountException(amount);
+        }else{
             this.balance-=amount;
         }
     }
@@ -117,7 +118,7 @@ class Account {
     public String toString(){
         return "Account "+this.accountNumber+ " has "+ this.balance;
     }
-}//Account class (3)
+}//Account class (1)
 
 class PersonalAccount extends Account {
 
@@ -418,6 +419,20 @@ class BalanceRemainingException extends RuntimeException{
         return balance;
     }
 }//BalanceRemainingException
+
+class InvalidAmountException extends RuntimeException{
+    double amount;
+
+    public InvalidAmountException(double amount){
+        this.amount=amount;
+    }
+
+    @Override
+    public String toString() {
+        return "InvalidAmountException:"+amount;
+    }
+}//InvalidAmountException
+
 
 public class Assignment02_20200808006 {
 
