@@ -1,14 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-/*
-            Missing implementations and questions :
-              !!--customer ve company classlarının içinde obje oluşturmaya gerek var mı yoksa arrayList içinden mi id'ye göre objeleri çağıracağız.
-              --Bank içindeki getClass methodları yapılacak.
-              --Bank'ın kalan methodları bitirilecek.
-              --Exceptionlar doldurulacak.......
-
- */
 class Bank{
     //Attributes
     private String name;
@@ -171,10 +163,27 @@ class Bank{
         }
     }
 
+    public String infoForTostring(){
+        String s = getName()+"    "+getAddress();
+        System.out.println(s);
+        for (int i = 0; i < companies.size(); i++) {
+            System.out.println("    "+companies.get(i));
+            for (int j = 0; j < companies.size()-i; j++){
+                System.out.println("        "+accounts.get(j+i).getAcctNum()+" "+accounts.get(j+i).getBalance()+" ");
+            }
+        }
+
+        for (int i = 0; i < customers.size(); i++) {
+            System.out.println("    "+customers.get(i));
+
+        }
+
+        return "";
+    }
     @Override
     public String toString() {
-        String s = getName()+"    "+getAddress()+"\n"+"    "+customers.toString();
-        return s;
+        return infoForTostring();
+
     }
 }//Bank class
 
@@ -194,6 +203,7 @@ class Account {
     // i. Constructor that takes the account number as parameter
     //  and defaults the balance to 0.
     public Account(String accountNumber) {
+
         this.balance=0;
         this.accountNumber=accountNumber;
     }
@@ -356,6 +366,7 @@ class BusinessAccount extends Account{
         return this.interestRate;
     }
     public void setRate(double interestRate) {
+        if (interestRate>0)
         this.interestRate = interestRate;
     }
 
@@ -384,6 +395,7 @@ class Customer {
         return id;
     }
     public void setId(int id) {
+        if (id>0);
         this.id = id;
     }
 
@@ -473,6 +485,7 @@ class Company{
         return id;
     }
     public void setId(int id) {
+        if(id>0);
         this.id = id;
     }
     public String getName() {
@@ -745,7 +758,7 @@ public class Assignment02_20200808006 {
         c = b.getCustomer(1);
         b.addAccount(c.getAccount("3456"));
         b.addAccount(c.getAccount("3457"));
-        //System.out.println(b.toString());
+        System.out.println(b.toString());
 
     }//main
 }//Assigment
